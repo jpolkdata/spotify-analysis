@@ -37,25 +37,28 @@ def gather_data_local():
 
         artists = get_artists_from_playlist(PLAYLIST)
 
-        artists = list(artists.keys())[:3]
+        artists = list(artists.keys())
         for artist in artists:
             artist_name = spotify.artist(artist)['name']
+
             # get each album for the artist
             artists_albums = spotify.artist_albums(artist,album_type='album',limit=5)
             for album in artists_albums['items']:
                 if album['id']:
-                    print(f"Artist: {artist_name} - Album: {album['name']}")
+                    # print(f"Artist: {artist_name} - Album: {album['name']}")
+                    album_length = 0
 
                     # get each song from the album and add it to the total album length
                     songs = spotify.album_tracks(album['id'])
                     for song in songs['items']:
-                        print(f"\t{song['track_number']} - {song['name']}: {song['duration_ms']}")
+                        # print(f"\t{song['track_number']} - {song['name']}: {song['duration_ms']}")
+                        album_length = album_length + song['duration_ms']
 
-            # write the output to a csv that matches our desired format
-            writer.writerow({'Year Released': '',
-                            'Album Length': '',
-                            'Album Name': '',
-                            'Artist': artist})
+                # write the output to a csv that matches our desired format
+                writer.writerow({'Year Released': album['release_date'],
+                                'Album Length': album_length,
+                                'Album Name': album['name'],
+                                'Artist': artist_name})
 
 if __name__ == "__main__":
     data = gather_data_local()
