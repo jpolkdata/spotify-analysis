@@ -1,16 +1,8 @@
 """Initial test of client authentication and basic Spotify functionality"""
 
-import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
-import configparser
+from tools.auth import get_client_credentials
 
-config = configparser.ConfigParser()
-config.read('config.cfg')
-client_credentials_manager = SpotifyClientCredentials(
-        client_id=config.get('SPOTIFY', 'CLIENT_ID'),
-        client_secret=config.get('SPOTIFY', 'CLIENT_SECRET')
-)
-spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
+spotify = get_client_credentials()
 
 def get_artist_uri(name):
     results = spotify.search(q='artist:' + name, type='artist')
