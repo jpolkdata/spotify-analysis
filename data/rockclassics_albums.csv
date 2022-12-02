@@ -31,8 +31,8 @@ Year Released,Album Length,Album Name,Artist
 2018-02-23,3378487,This House Is Not For Sale,Bon Jovi
 2022-07-22,2769060,RAW ('That Little Ol' Band From Texas' Original Soundtrack),ZZ Top
 2022-07-22,2769060,RAW (‘That Little Ol' Band From Texas’ Original Soundtrack),ZZ Top
-2012-09-11,2362864,La Futura,ZZ Top
 2012-09-11,2362704,La Futura,ZZ Top
+2012-09-11,2362864,La Futura,ZZ Top
 2012-09-11,2755278,La Futura (Deluxe Version),ZZ Top
 2020-10-16,8266486,Live From The Forum MMXVIII,Eagles
 2007-10-30,5453874,Long Road out of Eden,Eagles
@@ -43,7 +43,7 @@ Year Released,Album Length,Album Name,Artist
 2015-03-27,7203496,Tokyo Dome in Concert,Van Halen
 1998-03-17,3922422,Van Halen III,Van Halen
 1998,6311785,Pittsburgh 1998,Van Halen
-1995-01-24,3194448,Balance,Van Halen
+1995-01-24,3197808,Balance,Van Halen
 2020-10-02,6851405,Us + Them,Roger Waters
 2018-10-26,4761399,The Soldier's Tale (Narrated by Roger Waters),Roger Waters
 2018-10-26,4761399,The Soldier's Tale - Narrated by Roger Waters,Roger Waters
@@ -99,11 +99,11 @@ Year Released,Album Length,Album Name,Artist
 2022-01-07,9544491,Toy (Toy:Box),David Bowie
 2021-11-26,14174178,Brilliant Adventure (1992 – 2001),David Bowie
 2021-04-02,3248714,At The Kit Kat Klub (Live New York 99),David Bowie
-2022-04-15,9557734,Moving Pictures (40th Anniversary),Rush
 2022-04-15,9560140,Moving Pictures (40th Anniversary Super Deluxe),Rush
-2020-05-29,7146889,Permanent Waves (40th Anniversary),Rush
+2022-04-15,9557734,Moving Pictures (40th Anniversary),Rush
 2020-05-29,7146901,Permanent Waves (40th Anniversary),Rush
-2018-11-16,6454944,Hemispheres (40th Anniversary),Rush
+2020-05-29,7146889,Permanent Waves (40th Anniversary),Rush
+2018-11-16,6461822,Hemispheres (40th Anniversary),Rush
 2018-09-07,3878290,Raise Vibration,Lenny Kravitz
 2018-09-07,3878290,Raise Vibration,Lenny Kravitz
 2014-09-23,3715238,Strut,Lenny Kravitz
@@ -141,8 +141,8 @@ Year Released,Album Length,Album Name,Artist
 2022-09-30,2512806,Iron Man,Black Sabbath
 2022-11-18,11289984,The Miracle (Collector's Edition),Queen
 2022-11-18,11289984,The Miracle (Collector's Edition),Queen
-2020-10-02,4792118,Live Around the World (Deluxe),Queen
 2020-10-02,4792118,Live Around The World (Deluxe),Queen
+2020-10-02,4792118,Live Around the World (Deluxe),Queen
 2018-10-19,4794626,Bohemian Rhapsody (The Original Soundtrack),Queen
 2021-03-03,3187542,Stoned Moses (Live Ohio '76),James Gang
 1997-06-18,2129664,Funk #49,James Gang
@@ -177,8 +177,8 @@ Year Released,Album Length,Album Name,Artist
 2022-09-16,2508519,Animals (2018 Remix),Pink Floyd
 2022-09-16,2508519,Animals (2018 Remix),Pink Floyd
 2021-10-19,3071583,A Momentary Lapse of Reason (2019 Remix),Pink Floyd
-2021-04-30,3345917,Live at Knebworth 1990,Pink Floyd
 2021-04-30,3342917,Live at Knebworth 1990,Pink Floyd
+2021-04-30,3345917,Live at Knebworth 1990,Pink Floyd
 2022-09-16,2557033,"At The Royal Albert Hall (At The Royal Albert Hall / London, UK / April 14, 1970)",Creedence Clearwater Revival
 2019-08-02,3325049,Live At Woodstock,Creedence Clearwater Revival
 1980-12,2953967,The Concert,Creedence Clearwater Revival
@@ -216,8 +216,8 @@ Year Released,Album Length,Album Name,Artist
 1966-07-01,3021807,Animalization,The Animals
 2022-06-17,4003957,Money For Nothing (Remastered 2022),Dire Straits
 1995-06-26,2760997,Live At The BBC,Dire Straits
-1993-05-10,4537038,On the Night,Dire Straits
 1993-05-10,4530463,On The Night,Dire Straits
+1993-05-10,4537038,On the Night,Dire Straits
 1991-09-10,3634997,On Every Street (Remaster),Dire Straits
 2021-11-19,6006868,Knebworth 1996 (Live),Oasis
 2021-11-19,6006868,Oasis Knebworth 1996,Oasis
@@ -303,7 +303,7 @@ Year Released,Album Length,Album Name,Artist
 2022-06-10,10751962,Madman Across The Water (Deluxe Edition),Elton John
 2021-10-22,4335129,The Lockdown Sessions,Elton John
 2021-10-22,4335129,The Lockdown Sessions,Elton John
-2021-10-22,4132884,The Lockdown Sessions (Christmas Edition),Elton John
+2021-10-22,4132884,The Lockdown Sessions,Elton John
 2019-05-31,5183103,Other Sides,Phil Collins
 2019-05-31,7222457,Remixed Sides,Phil Collins
 2016-06-10,2741209,The Essential Going Back (2016 Remaster),Phil Collins

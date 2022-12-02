@@ -1,8 +1,16 @@
-"""Initial test of client authentication and basic Spotify functionality"""
+"""Initial test of api authentication and basic Spotify search functionality"""
 
-from tools.auth import get_client_credentials
+import os
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+from dotenv import load_dotenv
 
-spotify = get_client_credentials()
+load_dotenv()
+auth_manager = SpotifyClientCredentials(
+    client_id=os.getenv('SPOTIPY_CLIENT_ID'),
+    client_secret=os.getenv('SPOTIPY_CLIENT_SECRET')
+)
+spotify = spotipy.Spotify(auth_manager=auth_manager)
 
 def get_artist_uri(name):
     results = spotify.search(q='artist:' + name, type='artist')
