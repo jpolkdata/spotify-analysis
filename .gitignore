@@ -1,12 +1,10 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-
-# Unit test / coverage reports
-.cache
-
 # Environments
 .env
 /venv
 
 # Config
 *.cfg
+
+# Other stuff
+.cache
+/tmp
