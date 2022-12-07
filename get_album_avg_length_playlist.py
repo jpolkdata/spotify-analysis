@@ -3,8 +3,8 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from dotenv import load_dotenv
 import csv
-# import boto3
-# from datetime import datetime
+import boto3
+from datetime import datetime
 
 load_dotenv()
 auth_manager = SpotifyClientCredentials(
@@ -33,19 +33,18 @@ def get_artists_from_playlist(playlist_uri):
             artists[song['track']['artists'][0]['uri']] = song['track']['artists'][0]['name']
     return artists
 
-def gather_data_local():
-    """Get Spotify data about artists in a given playlist and save the end
-    results locally to a csv
+def gather_data_local(tmp_file_name):
+    """Get Spotify data about album lengths for all artists in a given playlist.
+    The end results are saved locally to a csv file.
     """
-    with open("data/rockclassics_albums.csv",'w') as file:
+    with open(tmp_file_name,'w') as file:
         header = list(final_data_dictionary.keys())
         writer = csv.DictWriter(file, fieldnames=header)
         writer.writeheader()
-        # albums_obtained = []
 
         artists = get_artists_from_playlist(PLAYLIST)
 
-        artists = list(artists.keys())
+        artists = list(artists.keys())[:3]
         for artist in artists:
             artist_name = spotify.artist(artist)['name']
             print(f'Artist: {artist_name}')
@@ -77,5 +76,28 @@ def gather_data_local():
                 
     return final_data_dictionary
 
+def gather_data_s3(tmp_file_name):
+    """Get Spotify data about album lengths for all artists in a given playlist.
+    The end results are saved to an AWS S3 bucket.
+    """
+    gather_data_local(tmp_file_name)
+
+    file_name_only = str.split(tmp_file_name,'/')[1]
+    date = datetime.now()
+    file_name = f'{date.year}/{date.month}/{date.day}/{file_name_only}'
+    
+    # write the output to the S3 bucket
+    session = boto3.Session(profile_name='default')
+    s3 = session.resource('s3') 
+    bucket_name = 'spotify-analysis-jpolkdata'
+    response = s3.meta.client.upload_file(Filename=tmp_file_name, 
+        Bucket=bucket_name, 
+        Key=file_name)
+
+    return response
+
+def lambda_handler(event, context):
+    gather_data_s3('tmp/rockclassics_albums.csv')
+
 if __name__ == "__main__":
-    data = gather_data_local()
+    data = gather_data_s3('tmp/rockclassics_albums.csv')

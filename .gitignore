@@ -5,6 +5,10 @@
 # Config
 *.cfg
 
+# Terraform
+tf/.terraform*
+tf/terraform*
+
 # Other stuff
 .cache
 /tmp
