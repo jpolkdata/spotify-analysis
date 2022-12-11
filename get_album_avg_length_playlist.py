@@ -1,12 +1,12 @@
-import os
-import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
-from dotenv import load_dotenv
-import csv
-import boto3
+import os, csv, boto3, spotipy
 from datetime import datetime
+from spotipy.oauth2 import SpotifyClientCredentials
 
-load_dotenv()
+### UNCOMMENT IF RUNNING LOCALLY
+# from dotenv import load_dotenv
+# load_dotenv()
+###
+
 auth_manager = SpotifyClientCredentials(
     client_id=os.getenv('SPOTIPY_CLIENT_ID'),
     client_secret=os.getenv('SPOTIPY_CLIENT_SECRET')
@@ -33,10 +33,11 @@ def get_artists_from_playlist(playlist_uri):
             artists[song['track']['artists'][0]['uri']] = song['track']['artists'][0]['name']
     return artists
 
-def gather_data_local(tmp_file_name):
+def gather_data_tmp(file_name):
     """Get Spotify data about album lengths for all artists in a given playlist.
-    The end results are saved locally to a csv file.
+    The end results are saved to a csv file in the /tmp/ directory
     """
+    tmp_file_name = f'/tmp/{file_name}'
     with open(tmp_file_name,'w') as file:
         header = list(final_data_dictionary.keys())
         writer = csv.DictWriter(file, fieldnames=header)
@@ -47,7 +48,7 @@ def gather_data_local(tmp_file_name):
         artists = list(artists.keys())[:3]
         for artist in artists:
             artist_name = spotify.artist(artist)['name']
-            print(f'Artist: {artist_name}')
+            # print(f'Artist: {artist_name}')
 
             # get each album for the artist
             artists_albums = spotify.artist_albums(artist,album_type='album',limit=5)
@@ -76,28 +77,30 @@ def gather_data_local(tmp_file_name):
                 
     return final_data_dictionary
 
-def gather_data_s3(tmp_file_name):
+def gather_data_s3(file_name):
     """Get Spotify data about album lengths for all artists in a given playlist.
     The end results are saved to an AWS S3 bucket.
     """
-    gather_data_local(tmp_file_name)
+    gather_data_tmp(file_name)
 
-    file_name_only = str.split(tmp_file_name,'/')[1]
-    date = datetime.now()
-    file_name = f'{date.year}/{date.month}/{date.day}/{file_name_only}'
+    tmp_file_name = f'/tmp/{file_name}'
+    s3_file_date = datetime.strftime(
+        datetime.today(), 
+        "%Y%m%d_%H%M%S")
+    s3_file_name = f'{s3_file_date}_{file_name}'
     
     # write the output to the S3 bucket
-    session = boto3.Session(profile_name='default')
+    session = boto3.Session()
     s3 = session.resource('s3') 
     bucket_name = 'spotify-analysis-jpolkdata'
     response = s3.meta.client.upload_file(Filename=tmp_file_name, 
         Bucket=bucket_name, 
-        Key=file_name)
+        Key=s3_file_name)
 
     return response
 
 def lambda_handler(event, context):
-    gather_data_s3('tmp/rockclassics_albums.csv')
+    gather_data_s3('rockclassics_albums.csv')
 
 if __name__ == "__main__":
-    data = gather_data_s3('tmp/rockclassics_albums.csv')
+    data = gather_data_s3('rockclassics_albums.csv')
