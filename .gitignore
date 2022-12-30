@@ -11,4 +11,5 @@ tf/terraform*
 
 # Other stuff
 .cache
+/package
 /tmp
