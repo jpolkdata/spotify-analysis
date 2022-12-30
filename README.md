@@ -6,10 +6,11 @@ So as the narrow the scope of albums that we will analyze, we choose a specific 
 Once we've determined the album lengths (and release dates) for each album we then visualize the results to make an obvseration about how the album lengths have changed over time.
 
 ## Prerequisites
-Python (and the Spotipy library)
-Terraform
-AWS account
-Spotify API credentials
+* You will need the following:
+* Python (and the Spotipy library)
+* Terraform
+* AWS account
+* Spotify API credentials
 
 ## Steps
 1. Create a python script that will:
