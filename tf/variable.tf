@@ -1,9 +1,17 @@
-variable "aws_access_key" {
+variable "AWS_ACCESS_KEY_ID" {
     type = string
 }
 
-variable "aws_secret_key" {
+variable "AWS_SECRET_ACCESS_KEY" {
     type = string
+}
+
+variable "SPOTIPY_CLIENT_ID" {
+  type = string
+}
+
+variable "SPOTIPY_CLIENT_SECRET" {
+  type = string
 }
 
 variable "aws_region" {
