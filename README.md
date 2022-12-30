@@ -1,5 +1,5 @@
 # Spotify Data Analysis - Album Lengths Over Time
-This app interacts with the Spotify API to determine how album lengths have changed over time. The purpose of this project is to work within Python, AWS (Lambda, S3) and Terraform to build an end-to-end data pipeline that includes a data visualization as the output.
+This app interacts with the Spotify API to determine how album lengths have changed over time. The purpose of this project is to work within Python, AWS (Lambda, S3, Cloudwatch, Glue, Athena) and Terraform to build an end-to-end data pipeline that includes a data visualization as the output.
 
 So as the narrow the scope of albums that we will analyze, we choose a specific Spotify playlist to start the process. Then we leverage Python to interact with the Spotify API and pull data about that playlist. We take each artist in the playlist and calculate the length and date of each of their albums.
 
