@@ -13,14 +13,14 @@ Spotify API credentials
 
 ## Steps
 1. Create a python script that will:
-   a. Connect to the Spotify API using the Spotipy Python library
-  b. Retrieve the artists that exist in a playlist (specified in the Python script)
-  c. Further interact with the Spotify API to obtain data about each album for each artist in the playlist, including the release year and individual track lengths
-  d. Calculate the total length of each album using the data from the individual tracks
+   * Connect to the Spotify API using the Spotipy Python library
+   * Retrieve the artists that exist in a playlist (specified in the Python script)
+   * Further interact with the Spotify API to obtain data about each album for each artist in the playlist, including the release year and individual track lengths
+   * Calculate the total length of each album using the data from the individual tracks
 
 2. Create Terraform scripts that will standup the AWS environment
-  a. The Lambda function that will run our Python script, including any needed dependencies
-  b. A Cloudwatch alarm will run on a cadence to pull new data about the playlist over time
+   * The Lambda function that will run our Python script, including any needed dependencies
+   * A Cloudwatch alarm will run on a cadence to pull new data about the playlist over time
 
 3. The Lambda will save data into S3. Configure an AWS Glue crawler and use Athena to query the data in S3 as a data lake, and save the output to a new location in S3
 
