@@ -2,11 +2,6 @@ import os, csv, boto3, spotipy
 from datetime import datetime
 from spotipy.oauth2 import SpotifyClientCredentials
 
-### UNCOMMENT IF RUNNING LOCALLY
-# from dotenv import load_dotenv
-# load_dotenv()
-###
-
 auth_manager = SpotifyClientCredentials(
     client_id=os.getenv('SPOTIPY_CLIENT_ID'),
     client_secret=os.getenv('SPOTIPY_CLIENT_SECRET')
@@ -33,7 +28,7 @@ def get_artists_from_playlist(playlist_uri):
             artists[song['track']['artists'][0]['uri']] = song['track']['artists'][0]['name']
     return artists
 
-def gather_data_tmp(file_name):
+def get_data_tmp(file_name):
     """Get Spotify data about album lengths for all artists in a given playlist.
     The end results are saved to a csv file in the /tmp/ directory
     """
@@ -48,19 +43,16 @@ def gather_data_tmp(file_name):
         artists = list(artists.keys())[:3]
         for artist in artists:
             artist_name = spotify.artist(artist)['name']
-            # print(f'Artist: {artist_name}')
 
             # get each album for the artist
             artists_albums = spotify.artist_albums(artist,album_type='album',limit=5)
             for album in artists_albums['items']:
                 if album['id']:
-                    # print(f"Artist: {artist_name} - Album: {album['name']}")
                     album_length = 0
 
                     # get each song from the album and add it to the total album length
                     songs = spotify.album_tracks(album['id'])
                     for song in songs['items']:
-                        # print(f"\t{song['track_number']} - {song['name']}: {song['duration_ms']}")
                         album_length = album_length + song['duration_ms']
 
                 # write the output to a csv that matches our desired format
@@ -77,11 +69,11 @@ def gather_data_tmp(file_name):
                 
     return final_data_dictionary
 
-def gather_data_s3(file_name):
+def get_data_s3(file_name):
     """Get Spotify data about album lengths for all artists in a given playlist.
     The end results are saved to an AWS S3 bucket.
     """
-    gather_data_tmp(file_name)
+    get_data_tmp(file_name)
 
     tmp_file_name = f'/tmp/{file_name}'
     s3_file_date = datetime.strftime(
@@ -100,7 +92,7 @@ def gather_data_s3(file_name):
     return response
 
 def lambda_handler(event, context):
-    gather_data_s3('rockclassics_albums.csv')
+    get_data_s3('rockclassics_albums.csv')
 
 if __name__ == "__main__":
-    data = gather_data_s3('rockclassics_albums.csv')
+    data = get_data_s3('rockclassics_albums.csv')
