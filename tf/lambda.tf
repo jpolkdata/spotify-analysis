@@ -7,7 +7,7 @@ resource "aws_lambda_function" "spotify_analysis" {
   #   data.aws_lambda_layer_version.aws_sdk.arn,
   #   data.aws_lambda_layer_version.requests_library.arn
   # ]
-  filename = data.archive_file.deployment.output_path
+  filename = data.archive_file.lambda_deployment.output_path
   handler = "get_album_lengths_from_playlist.lambda_handler"
   role = "${aws_iam_role.lambda_execution_role.arn}"
   runtime = "python3.8"
@@ -24,10 +24,6 @@ resource "aws_lambda_function" "spotify_analysis" {
 #####################################################
 # Lambda Layers
 #####################################################
-# data "aws_lambda_layer_version" "aws_sdk" {
-#   layer_name = "python3-8-awssdk-1-18-69"
-# }
-
 # resource "aws_s3_bucket_object" "object" {
 #   bucket = aws_s3_bucket.spotify_bucket
 #   key    = "new_object_key"
@@ -39,13 +35,17 @@ resource "aws_lambda_function" "spotify_analysis" {
 #   etag = filemd5("path/to/file")
 # }
 
-# data "aws_lambda_layer_version" "requests_library" {
-#   layer_name = "python3-8-requests"
+# data "aws_lambda_layer_version" "lambda_layer_requests" {
+#   filename            = "../deployment/layer_requests.zip"
+#   layer_name          = "python3-8-requests"
+#   # source_code_hash    = data.archive_file.lambda_layer_requests.output_base64sha256 # TODO: save the zip to s3
 #   compatible_runtimes = ["python3.8"]
 # }
 
-# data "aws_lambda_layer_version" "spotipy_library" {
-#   layer_name = "python3-8-spotipy"
+# data "aws_lambda_layer_version" "lambda_layer_spotipy" {
+#   filename            = "../deployment/layer_spotipy.zip"
+#   layer_name          = "python3-8-spotipy"
+#   # source_code_hash    = data.archive_file.lambda_layer_spotipy.output_base64sha256 # TODO: save the zip to s3
 #   compatible_runtimes = ["python3.8"]
 # }
 

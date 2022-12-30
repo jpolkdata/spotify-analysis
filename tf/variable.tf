@@ -19,9 +19,14 @@ variable "aws_region" {
     default = "us-east-1"
 }
 
-variable "bucket_name" {
+variable "data_bucket_name" {
     type    = string
-    default = "spotify-analysis-jpolkdata"
+    default = "jpolkdata-spotify-data"
+}
+
+variable "lambda_bucket_name" {
+    type    = string
+    default = "jpolkdata-spotify-lambda"
 }
 
 variable "acl_value" {
