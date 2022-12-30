@@ -8,8 +8,10 @@
 # Terraform
 tf/.terraform*
 tf/terraform*
+tf/*.tfplan
 
 # Other stuff
 .cache
 /package
 /tmp
+/deployment
