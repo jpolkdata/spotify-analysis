@@ -1,5 +1,5 @@
 #####################################################
-# Lambda Function
+# Lambda function
 #####################################################
 resource "aws_lambda_function" "spotify_analysis" {
   function_name = "spotify-analysis"
@@ -22,19 +22,8 @@ resource "aws_lambda_function" "spotify_analysis" {
 }
 
 #####################################################
-# Lambda Layers
+# Lambda layers
 #####################################################
-# resource "aws_s3_bucket_object" "object" {
-#   bucket = aws_s3_bucket.spotify_bucket
-#   key    = "new_object_key"
-#   source = "path/to/file"
-
-#   # The filemd5() function is available in Terraform 0.11.12 and later
-#   # For Terraform 0.11.11 and earlier, use the md5() function and the file() function:
-#   # etag = "${md5(file("path/to/file"))}"
-#   etag = filemd5("path/to/file")
-# }
-
 # data "aws_lambda_layer_version" "lambda_layer_requests" {
 #   filename            = "../deployment/layer_requests.zip"
 #   layer_name          = "python3-8-requests"
@@ -50,7 +39,7 @@ resource "aws_lambda_function" "spotify_analysis" {
 # }
 
 #####################################################
-# IAM Role and Policies
+# IAM role and policies
 #####################################################
 resource "aws_iam_role" "lambda_execution_role" {
   name = "spotify_analysis"
