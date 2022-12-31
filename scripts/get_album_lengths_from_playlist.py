@@ -37,7 +37,7 @@ def get_data_tmp(playlist_uri, file_name):
 
         artists = get_artists_from_playlist(playlist_uri)
 
-        artists = list(artists.keys())[:3] # limiting to first 3 artists to reduce file size for initial testing
+        artists = list(artists.keys())
         for artist in artists:
             artist_name = spotify.artist(artist)['name']
 
