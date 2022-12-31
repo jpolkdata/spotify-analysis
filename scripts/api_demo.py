@@ -34,7 +34,49 @@ def get_related_artists(uri):
         print('followers    :' + str(artist['followers'].get('total')))
         print()
 
+def get_featured_playlists():
+    playlists = spotify.featured_playlists(locale=None, country='US', timestamp=None, limit=20, offset=0)
+    for playlist in playlists['playlists']['items']:
+        print('===============')
+        print(playlist['name'])
+        print(playlist['description'])
+        print(playlist['uri'])
+        print(playlist['tracks']['total'])
+
+def get_categories():
+    categories = spotify.categories(country=None, locale=None, limit=20, offset=0)
+    for category in categories['categories']['items']:
+        # print(category)
+        print('===============')
+        print(category['name'])
+        print(category['id'])
+
+def get_category_playlists(category_name):
+    categories = spotify.categories(country=None, locale=None, limit=20, offset=0)
+    for category in categories['categories']['items']:
+        # print(f"{category['name']}; {category['id']}")
+        if category['name'] == category_name:
+            category_id = category['id']
+            # print(category_id)
+            break
+    playlists = spotify.category_playlists(category_id=category_id, country='US', limit=20, offset=0)
+    print(playlists)
+    for playlist in playlists['playlists']['items']:
+        print('===============')
+        print(playlist['name'])
+        print(playlist['description'])
+        print(playlist['uri'])
+        print(playlist['tracks']['total'])
+
 if __name__ == "__main__":
-    uri = get_artist_uri("Coheed and Cambria")
-    top_tracks(uri)
-    get_related_artists(uri)
+    # uri = get_artist_uri("Coheed and Cambria")
+    # top_tracks(uri)
+    # get_related_artists(uri)
+
+    # get_featured_playlists()
+
+    # get_categories()
+    get_category_playlists('Hip-Hop')
+
+
+
