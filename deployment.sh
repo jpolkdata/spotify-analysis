@@ -1,16 +1,26 @@
 #!/usr/bin/env bash
 
+##################################################
+# Generate the lambda layer zip files
+##################################################
 # remove the current layer zips and create a working folder
 rm -r deployment/layer*.zip
-mkdir -p tmp/
+mkdir -p python/
 
-# copy the contents of our external libraries into the new folder
-cp -r venv/lib/python3.8/site-packages/requests tmp/
-cp -r venv/lib/python3.8/site-packages/spotipy tmp/
+# create the requests zip
+pip install requests -t python/
+zip -r deployment/layer_requests.zip python/
+rm -r python/*
 
-# create the zip files
-zip -r deployment/layer_requests.zip tmp/requests
-zip -r deployment/layer_spotipy.zip tmp/spotipy
+# create the spotipy zip
+pip install spotipy -t python/
+zip -r deployment/layer_spotipy.zip python/
+rm -r python/
 
-# cleanup
-rm -r tmp/
+##################################################
+# Terraform deployment
+##################################################
+# cd tf
+# terraform init
+# terraform plan
+# terraform apply -auto-approve
