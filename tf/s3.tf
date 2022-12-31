@@ -48,15 +48,15 @@ resource "aws_s3_bucket_public_access_block" "layer_protected_bucket_access" {
 
 # Lambda layer files
 resource "aws_s3_object" "s3_layer_requests" {
-    bucket = aws_s3_bucket.spotify_lambda_bucket.id
-    key    = "layer_requests.zip"
-    source = "../deployment/layer_requests.zip"
-    etag = filemd5("../deployment/layer_requests.zip")
+    bucket  = aws_s3_bucket.spotify_lambda_bucket.id
+    key     = "layer_requests.zip"
+    source  = "../deployment/layer_requests.zip"
+    etag    = filemd5("../deployment/layer_requests.zip")
 }
 
 resource "aws_s3_object" "s3_layer_spotipy" {
-    bucket = aws_s3_bucket.spotify_lambda_bucket.id
-    key    = "layer_spotipy.zip"
-    source = "../deployment/layer_spotipy.zip"
-    etag = filemd5("../deployment/layer_spotipy.zip")
+    bucket  = aws_s3_bucket.spotify_lambda_bucket.id
+    key     = "layer_spotipy.zip"
+    source  = "../deployment/layer_spotipy.zip"
+    etag    = filemd5("../deployment/layer_spotipy.zip")
 }

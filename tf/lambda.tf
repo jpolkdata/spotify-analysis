@@ -13,6 +13,8 @@ resource "aws_lambda_function" "spotify_analysis" {
   runtime = "python3.8"
   timeout = 300
 
+  source_code_hash = filebase64sha256(data.archive_file.lambda_deployment.output_path)
+
   environment {
     variables = {
       SPOTIPY_CLIENT_ID = var.SPOTIPY_CLIENT_ID,
