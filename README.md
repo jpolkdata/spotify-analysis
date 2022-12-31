@@ -1,13 +1,13 @@
 # Spotify Data Analysis - Album Lengths Over Time
-This app interacts with the Spotify API to determine how album lengths have changed over time. The purpose of this project is to work within Python, AWS (Lambda, S3, Cloudwatch, Glue, Athena) and Terraform to build an end-to-end data pipeline that includes a data visualization as the output.
+This app interacts with the Spotify API to determine how album lengths have changed over time. The purpose of this project is to work within Python, AWS and Terraform to build an end-to-end data pipeline that produces data visualizations as the end product.
 
-To narrow the scope of albums to analyze we choose a specific Spotify playlist to initiate the process. Then we leverage Python to interact with the Spotify API and get data about the artists in that playlist. We then interact with a different Spotify API endpoint to get data about each album for each of those artists, including track lengths and release date. Using that information we calculate the length of each of those albums. 
+To analyze albums over time we need to define a nice sample size. We get a popular Spotify playlist (interacting with the API via Python) to give us a nice assortment of artists. Then we use a different API endpoint to get data about each album for those artists. We are most interested in the track lengths and release dates. Using that information we then have to calculate the length of each of those albums on our own. 
 
-The output of that processing allows us to make some observations about how album lengths change over time. We visualize the results to share our findings.
+The output of that processing allows us to make some observations about how album lengths change over time. We visualize the results to share our findings. Changing the playlist used as the source of data (and thus the genre) might produce different observations.
 
 ## Prerequisites
 You will need the following:
-* Python (and the Spotipy library)
+* Python
 * Terraform
 * AWS account
 * Spotify API credentials
@@ -19,8 +19,9 @@ You will need the following:
    * Further interact with the Spotify API to obtain data about each album for each artist in the playlist, including the release year and individual track lengths
    * Calculate the total length of each album using the data from the individual tracks
 
-2. Create Terraform scripts that will standup the AWS environment
-   * The Lambda function that will run our Python script, including any needed dependencies
+2. Create Terraform scripts that will standup the AWS environment:
+   * S3 buckets to store our data files as well as our Lambda code
+   * A Lambda function that will run our Python script, including any needed dependencies
    * A Cloudwatch alarm will run on a cadence to pull new data about the playlist over time
 
 3. The Lambda will save data into S3. Configure an AWS Glue crawler and use Athena to query the data in S3 as a data lake, and save the output to a new location in S3

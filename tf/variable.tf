@@ -1,9 +1,9 @@
 variable "AWS_ACCESS_KEY_ID" {
-    type = string
+  type = string
 }
 
 variable "AWS_SECRET_ACCESS_KEY" {
-    type = string
+  type = string
 }
 
 variable "SPOTIPY_CLIENT_ID" {
@@ -15,20 +15,20 @@ variable "SPOTIPY_CLIENT_SECRET" {
 }
 
 variable "aws_region" {
-    type    = string
-    default = "us-east-1"
+  type    = string
+  default = "us-east-1"
 }
 
 variable "data_bucket_name" {
-    type    = string
-    default = "jpolkdata-spotify-data"
+  type    = string
+  default = "jpolkdata-spotify-data"
 }
 
 variable "lambda_bucket_name" {
-    type    = string
-    default = "jpolkdata-spotify-lambda"
+  type    = string
+  default = "jpolkdata-spotify-lambda"
 }
 
 variable "acl_value" {
-    default = "private"
+  default = "private"
 }
