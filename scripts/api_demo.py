@@ -1,7 +1,6 @@
 """Initial test of api authentication and basic Spotify search functionality"""
 
-import os
-import spotipy
+import os, re, spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from dotenv import load_dotenv
 
@@ -68,6 +67,12 @@ def get_category_playlists(category_name):
         print(playlist['uri'])
         print(playlist['tracks']['total'])
 
+def get_playlist_name(playlist_uri):
+    playlist = spotify.playlist(playlist_uri, fields=('name'), market='US', additional_types=('track', ))
+    playlist_name = playlist['name']
+    playlist_name = re.sub('[^a-zA-Z0-9\n\.]', '', playlist_name)
+    print(playlist_name)
+
 if __name__ == "__main__":
     # uri = get_artist_uri("Coheed and Cambria")
     # top_tracks(uri)
@@ -76,7 +81,9 @@ if __name__ == "__main__":
     # get_featured_playlists()
 
     # get_categories()
-    get_category_playlists('Hip-Hop')
+    # get_category_playlists('Hip-Hop')
+
+    get_playlist_name('spotify:playlist:37i9dQZF1DWTggY0yqBxES')
 
 
 

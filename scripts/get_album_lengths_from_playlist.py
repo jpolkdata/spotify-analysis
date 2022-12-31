@@ -1,4 +1,4 @@
-import os, csv, boto3, spotipy
+import os, csv, re, boto3, spotipy
 from datetime import datetime
 from spotipy.oauth2 import SpotifyClientCredentials
 
@@ -82,8 +82,15 @@ def move_data_to_s3(file_name):
 
     return response
 
+def get_playlist_name(playlist_uri):
+    playlist = spotify.playlist(playlist_uri, fields=('name'), market='US', additional_types=('track', ))
+    playlist_name = playlist['name']
+    playlist_name = re.sub('[^a-zA-Z0-9\n\.]', '', playlist_name)
+    return playlist_name
+
 def get_file():
     playlist_uri = "spotify:playlist:37i9dQZF1DWXRqgorJj26U" # Rock Classics
+    playlist_name = get_playlist_name(playlist_uri)
 
     # initialize the tmp directory
     tmp = '/tmp/'
@@ -91,7 +98,7 @@ def get_file():
 
     # generate the file
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    file_name = f'{tmp}{timestamp}_rockclassics.csv'
+    file_name = f'{tmp}{timestamp}_{playlist_name}.csv'
     get_data_tmp(playlist_uri, file_name)
     move_data_to_s3(file_name)
     
