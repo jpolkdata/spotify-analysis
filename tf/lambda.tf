@@ -25,7 +25,7 @@ resource "aws_lambda_function" "spotify_analysis" {
 # Lambda layers
 #####################################################
 resource "aws_lambda_layer_version" "lambda_layer_requests" {
-  layer_name          = "python3-8-requests"
+  layer_name          = "requests"
   s3_bucket           = "${aws_s3_object.s3_layer_requests.bucket}"
   s3_key              = "${aws_s3_object.s3_layer_requests.key}"
   s3_object_version   = "${aws_s3_object.s3_layer_requests.version_id}"
@@ -33,7 +33,7 @@ resource "aws_lambda_layer_version" "lambda_layer_requests" {
 }
 
 resource "aws_lambda_layer_version" "lambda_layer_spotipy" {
-  layer_name          = "python3-8-spotipy"
+  layer_name          = "spotipy"
   s3_bucket           = "${aws_s3_object.s3_layer_spotipy.bucket}"
   s3_key              = "${aws_s3_object.s3_layer_spotipy.key}"
   s3_object_version   = "${aws_s3_object.s3_layer_spotipy.version_id}"

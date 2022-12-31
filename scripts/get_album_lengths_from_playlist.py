@@ -3,8 +3,8 @@ from datetime import datetime
 from spotipy.oauth2 import SpotifyClientCredentials
 
 auth_manager = SpotifyClientCredentials(
-    client_id=os.getenv('SPOTIPY_CLIENT_ID'),
-    client_secret=os.getenv('SPOTIPY_CLIENT_SECRET')
+    client_id=os.getenv('TF_VAR_SPOTIPY_CLIENT_ID'),
+    client_secret=os.getenv('TF_VAR_SPOTIPY_CLIENT_SECRET')
 )
 spotify = spotipy.Spotify(auth_manager=auth_manager)
 
@@ -14,8 +14,6 @@ final_data_dictionary = {
     "Album Name": [],
     "Artist": []
 }
-
-PLAYLIST = "spotify:playlist:37i9dQZF1DWXRqgorJj26U" # Rock Classics
 
 def get_artists_from_playlist(playlist_uri):
     """Get a dictionary(artist uri: artist name) of all primary artists in 
@@ -28,19 +26,18 @@ def get_artists_from_playlist(playlist_uri):
             artists[song['track']['artists'][0]['uri']] = song['track']['artists'][0]['name']
     return artists
 
-def get_data_tmp(file_name):
+def get_data_tmp(playlist_uri, file_name):
     """Get Spotify data about album lengths for all artists in a given playlist.
     The end results are saved to a csv file in the /tmp/ directory
     """
-    tmp_file_name = f'/tmp/{file_name}'
-    with open(tmp_file_name,'w') as file:
+    with open(file_name,'w') as file:
         header = list(final_data_dictionary.keys())
         writer = csv.DictWriter(file, fieldnames=header)
         writer.writeheader()
 
-        artists = get_artists_from_playlist(PLAYLIST)
+        artists = get_artists_from_playlist(playlist_uri)
 
-        artists = list(artists.keys())[:3]
+        artists = list(artists.keys())[:3] # limiting to first 3 artists to reduce file size for initial testing
         for artist in artists:
             artist_name = spotify.artist(artist)['name']
 
@@ -67,32 +64,44 @@ def get_data_tmp(file_name):
                 final_data_dictionary['Album Name'].append(album['name'])
                 final_data_dictionary['Artist'].append(artist_name)
                 
-    return final_data_dictionary
+    # return final_data_dictionary
 
-def get_data_s3(file_name):
+def move_data_to_s3(file_name):
     """Get Spotify data about album lengths for all artists in a given playlist.
     The end results are saved to an AWS S3 bucket.
     """
-    get_data_tmp(file_name)
-
-    tmp_file_name = f'/tmp/{file_name}'
-    s3_file_date = datetime.strftime(
-        datetime.today(), 
-        "%Y%m%d_%H%M%S")
-    s3_file_name = f'{s3_file_date}_{file_name}'
+    s3_file_name = file_name.split('/')[-1]
     
     # write the output to the S3 bucket
     session = boto3.Session()
     s3 = session.resource('s3') 
-    bucket_name = 'spotify-analysis-jpolkdata'
-    response = s3.meta.client.upload_file(Filename=tmp_file_name, 
+    bucket_name = 'jpolkdata-spotify-data'
+    response = s3.meta.client.upload_file(Filename=file_name, 
         Bucket=bucket_name, 
         Key=s3_file_name)
 
     return response
 
+def get_file():
+    playlist_uri = "spotify:playlist:37i9dQZF1DWXRqgorJj26U" # Rock Classics
+
+    # initialize the tmp directory
+    tmp = '/tmp/'
+    if not os.path.exists(tmp): os.makedirs(tmp)
+
+    # generate the file
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    file_name = f'{tmp}{timestamp}_rockclassics.csv'
+    get_data_tmp(playlist_uri, file_name)
+    move_data_to_s3(file_name)
+    
+    # cleanup tmp directory
+    os.remove(file_name)
+
 def lambda_handler(event, context):
-    get_data_s3('rockclassics_albums.csv')
+    get_file()
 
 if __name__ == "__main__":
-    data = get_data_s3('rockclassics_albums.csv')
+    from dotenv import load_dotenv
+    load_dotenv()
+    get_file()
