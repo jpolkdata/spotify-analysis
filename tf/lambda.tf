@@ -68,29 +68,17 @@ data "aws_iam_policy_document" "lambda_trust_policy" {
 
 data "aws_iam_policy_document" "lambda_execute_policy_document" {
   statement {
-    sid       = "InvokeLambda"
+    sid       = "InvokeFunction"
     effect    = "Allow"
-    actions   = ["lambda:InvokeLambda"]
+    actions   = ["lambda:InvokeFunction"]
     resources = [aws_lambda_function.spotify_analysis.arn]
   }
   statement {
     sid       = "WriteToS3"
     effect    = "Allow"
     actions   = ["s3:PutObject"]
-    resources = [aws_s3_bucket.spotify_data_bucket.arn]
+    resources = ["${aws_s3_bucket.spotify_data_bucket.arn}/*"]
   }
-  # statement {
-  #   sid = "ManageLambdaFunction"
-  #   effect = "Allow"
-  #   actions = [
-      # "lambda:*", # TODO: restrict these permissions to just what is required
-      # "ec2:*",
-      # "cloudwatch:*",
-      # "logs:*",
-      # "s3:*"
-  #   ]
-  #   resources = ["*"]
-  # }
 }
 
 resource "aws_iam_policy" "lambda_execute_policy" {
