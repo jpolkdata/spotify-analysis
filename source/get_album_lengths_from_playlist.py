@@ -4,7 +4,8 @@ from spotipy.oauth2 import SpotifyClientCredentials
 
 auth_manager = SpotifyClientCredentials(
     client_id=os.getenv('TF_VAR_SPOTIPY_CLIENT_ID'),
-    client_secret=os.getenv('TF_VAR_SPOTIPY_CLIENT_SECRET')
+    client_secret=os.getenv('TF_VAR_SPOTIPY_CLIENT_SECRET'),
+    cache_handler=spotipy.MemoryCacheHandler()
 )
 spotify = spotipy.Spotify(auth_manager=auth_manager)
 
