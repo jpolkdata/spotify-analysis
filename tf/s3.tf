@@ -2,7 +2,8 @@
 # S3 Bucket for data files
 #####################################################
 resource "aws_s3_bucket" "spotify_data_bucket" {
-  bucket = var.data_bucket_name
+  bucket        = var.data_bucket_name
+  force_destroy = true
 }
 
 # Bucket private access
@@ -26,7 +27,8 @@ resource "aws_s3_bucket_public_access_block" "data_protected_bucket_access" {
 # S3 Bucket for lambda layer files
 #####################################################
 resource "aws_s3_bucket" "spotify_lambda_bucket" {
-  bucket = var.lambda_bucket_name
+  bucket        = var.lambda_bucket_name
+  force_destroy = true
 }
 
 # Bucket private access
