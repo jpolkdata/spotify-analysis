@@ -45,7 +45,7 @@ resource "aws_lambda_layer_version" "lambda_layer_spotipy" {
 #####################################################
 # IAM role and policies
 #####################################################
-resource "aws_iam_role" "lambda_execution_role" {
+resource "aws_iam_role" "lambda_execute_role" {
   name = "spotify_analysis"
   assume_role_policy = data.aws_iam_policy_document.lambda_trust_policy.json
 }
@@ -66,28 +66,40 @@ data "aws_iam_policy_document" "lambda_trust_policy" {
   }
 }
 
-data "aws_iam_policy_document" "lambda_execution_policy_document" {
+data "aws_iam_policy_document" "lambda_execute_policy_document" {
   statement {
-    sid = "ManageLambdaFunction"
-    effect = "Allow"
-    actions = [
-      "lambda:*", # TODO: restrict these permissions to just what is required
-      "ec2:*",
-      "cloudwatch:*",
-      "logs:*",
-      "s3:*"
-    ]
-    resources = ["*"]
+    sid       = "InvokeLambda"
+    effect    = "Allow"
+    actions   = ["lambda:InvokeLambda"]
+    resources = [var.aws_lambda_function.spotify_analysis.arn]
   }
+  statement {
+    sid       = "WriteToS3"
+    effect    = "Allow"
+    actions   = ["s3:PutObject"]
+    resources = [var.aws_s3_bucket.spotify_data_bucket.arn]
+  }
+  # statement {
+  #   sid = "ManageLambdaFunction"
+  #   effect = "Allow"
+  #   actions = [
+      # "lambda:*", # TODO: restrict these permissions to just what is required
+      # "ec2:*",
+      # "cloudwatch:*",
+      # "logs:*",
+      # "s3:*"
+  #   ]
+  #   resources = ["*"]
+  # }
 }
 
-resource "aws_iam_policy" "lambda_execution_policy" {
+resource "aws_iam_policy" "lambda_execute_policy" {
   name = "lambda_execution_policy"
-  policy = data.aws_iam_policy_document.lambda_execution_policy_document.json
+  policy = data.aws_iam_policy_document.lambda_execute_policy_document.json
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_execution_attachment" {
-  role = aws_iam_role.lambda_execution_role.name
-  policy_arn = aws_iam_policy.lambda_execution_policy.arn
+  role = aws_iam_role.lambda_execute_role.name
+  policy_arn = aws_iam_policy.lambda_execute_policy.arn
 }
 
