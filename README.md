@@ -21,12 +21,21 @@ You will need the following:
 
 2. Create Terraform scripts that will standup the AWS environment:
    * S3 buckets to store our data files as well as our Lambda code
-   * A Lambda function that will run our Python script, including any needed dependencies
-   * A Cloudwatch alarm will run on a cadence to pull new data about the playlist over time
+   * A Lambda function that will run our Python script
+   * External Python libraries are created as Lambda layers
+   * IAM role and policies to allow the Lambda to be executed
+   * A Cloudwatch alarm to invoke the lambda on a schedule
 
-3. The Lambda will save data into S3. Configure an AWS Glue crawler and use Athena to query the data in S3 as a data lake, and save the output to a new location in S3
-
-4. Use the Athena results to generate a visualization that answers our initial question of "How are album lengths changing over time?"
+TO DO:
+   * Terraform: 
+      * Tag the resources with 'spotify-analysis'
+      * Move the spotify API credentials into secrets manager
+      * Move the playlist ID into the lambda environment variables
+   * ETL the s3 data into a database/data lake (Glue/DynamoDB?)
+   * Visualize data from the database (Python)
 
 ## Next Steps
-Now that we can analyze a given playlist, what happens if we start looking at different genres? How do album lengths change over time for pop artists vs rap artists? What other observations can we make?
+Now that we can analyze a given playlist, what other observations can be made? Some examples I have considered include:
+   * What happens if we start looking at different genres? 
+   * How do album lengths change over time for pop artists vs rap artists? 
+   * What if we evaluate classic rock artists vs current rock artists?
