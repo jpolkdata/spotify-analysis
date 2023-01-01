@@ -2,7 +2,7 @@
 # Cloudwatch rule
 #####################################################
 resource "aws_cloudwatch_event_rule" "weekly" {
-  name = "weekly"
+  name = "weekly_spotify_analysis"
   description = "Trigger weekly"
   schedule_expression = "rate(7 days)"
   is_enabled = false
@@ -19,6 +19,6 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_trigger_lambda" {
   action = "lambda:InvokeFunction"
   function_name = aws_lambda_function.spotify_analysis.function_name
   principal = "events.amazonaws.com"
-  source_arn = aws_cloudwatch_event_rule.every_week.arn
+  source_arn = aws_cloudwatch_event_rule.weekly.arn
 }
 
