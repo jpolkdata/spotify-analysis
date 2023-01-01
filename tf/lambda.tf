@@ -9,7 +9,7 @@ resource "aws_lambda_function" "spotify_analysis" {
   ]
   filename = data.archive_file.lambda_deployment.output_path
   handler = "get_album_lengths_from_playlist.lambda_handler"
-  role = "${aws_iam_role.lambda_execution_role.arn}"
+  role = "${aws_iam_role.lambda_execute_role.arn}"
   runtime = "python3.8"
   timeout = 300
 
@@ -71,13 +71,13 @@ data "aws_iam_policy_document" "lambda_execute_policy_document" {
     sid       = "InvokeLambda"
     effect    = "Allow"
     actions   = ["lambda:InvokeLambda"]
-    resources = [var.aws_lambda_function.spotify_analysis.arn]
+    resources = [aws_lambda_function.spotify_analysis.arn]
   }
   statement {
     sid       = "WriteToS3"
     effect    = "Allow"
     actions   = ["s3:PutObject"]
-    resources = [var.aws_s3_bucket.spotify_data_bucket.arn]
+    resources = [aws_s3_bucket.spotify_data_bucket.arn]
   }
   # statement {
   #   sid = "ManageLambdaFunction"
