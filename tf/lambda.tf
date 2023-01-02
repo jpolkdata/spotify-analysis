@@ -3,6 +3,7 @@
 #####################################################
 resource "aws_lambda_function" "spotify_analysis" {
   function_name = "spotify-analysis"
+  description   = "generate data about artists from Spotify API"
   layers = [
     aws_lambda_layer_version.lambda_layer_requests.arn,
     aws_lambda_layer_version.lambda_layer_spotipy.arn
@@ -20,6 +21,10 @@ resource "aws_lambda_function" "spotify_analysis" {
       SPOTIPY_CLIENT_ID = var.SPOTIPY_CLIENT_ID,
       SPOTIPY_CLIENT_SECRET = var.SPOTIPY_CLIENT_SECRET
     }
+  }
+
+  tags = {
+    Project = local.project
   }
 }
 

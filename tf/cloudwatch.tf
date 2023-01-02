@@ -6,6 +6,9 @@ resource "aws_cloudwatch_event_rule" "weekly" {
   description = "Trigger weekly"
   schedule_expression = "rate(7 days)"
   is_enabled = false
+  tags = {
+    Project = local.project
+  }
 }
 
 resource "aws_cloudwatch_event_target" "lambda" {

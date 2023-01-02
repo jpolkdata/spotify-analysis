@@ -28,7 +28,6 @@ You will need the following:
 
 TO DO:
    * Terraform: 
-      * Tag the resources with 'spotify-analysis'
       * Move the spotify API credentials into secrets manager
       * Move the playlist ID into the lambda environment variables
    * ETL the s3 data into a database/data lake (Glue/DynamoDB?)
