@@ -59,6 +59,22 @@ If all goes well then you go can ahead and apply the changes using `terraform ap
 
 As the Lambda runs each week the results of the script will be saved into a file in S3. From that point we can use the data to start making observations and visualizations around the data, and see how album lengths are changing over time.
 
+### Create a local .env file
+In order to connect to S3 to do analysis of the files and create some visualizations, we need a way to authenticate to AWS. The way I chose to do this is to utilize
+the `os` and `dotenv` libraries to read my access key and secret from a local .env file. As this is sensitive info I have added the .env file to my .gitignore.
+
+Inside my Python scripts I just call `load_dotenv()`. By default that will look for environment variables to load within a file named .env, which exists in the root of my project. The contents of that file are just these variables:
+```
+AWS_ACCESS_KEY_ID={MY_ACCESS_KEY}
+AWS_SECRET_ACCESS_KEY={MY_SECRET_KEY}
+```
+
+By calling `load_dotenv()` in my Python scripts, I can now access those values using the `os.getlogic()' command:
+```
+aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID")
+aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY") 
+```
+
 ## Next Steps / Further Improvements
 
 ### Further Observations
