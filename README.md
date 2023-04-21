@@ -1,28 +1,30 @@
 # Spotify Data Analysis - Album Lengths Over Time
 
-This app interacts with the Spotify API to determine how album lengths have changed over time. The purpose of this project is to work within Python, AWS and Terraform to build an end-to-end data pipeline that produces data visualizations as the end product.
+This app interacts with the Spotify API to determine how album lengths have changed over time. The purpose of this project is to work within Python, AWS and Terraform to build an end-to-end data pipeline. The data being captured revolves around album lengths across various artists in a given genre over time.
 
-To analyze albums over time we need to define a nice sample size. We get a popular Spotify playlist (interacting with the API via Python) to give us a nice assortment of artists. Then we use a different API endpoint to get data about each album for those artists. We are most interested in the track lengths and release dates. Using that information we then have to calculate the length of each of those albums on our own.
+To define a useful sample size, we locate a popular Spotify playlist (interacting with the API via Python) to give us an assortment of artists. Then we use a different API endpoint to get data about each album for those artists. We are mostly interested in the track lengths and release dates. Using that information we then calculate the length of each of those albums using Python.
 
 The output of that processing allows us to make some observations about how album lengths change over time. We visualize the results to share our findings. Changing the playlist used as the source of data (and thus the genre) might produce different observations.
+
+Here's an overview of the process:
+![Process Overview](docs/process_overview.png)
 
 ## High-Level Steps
 
 1. Create a python script that will:
    * Connect to the Spotify API using the Spotipy Python library
-   * Retrieve the artists that exist in a playlist (specified in the Python script)
+   * Retrieve the artists that exist in a given playlist
    * Further interact with the Spotify API to obtain data about each album for each artist in the playlist, including the release year and individual track lengths
    * Calculate the total length of each album using the data from the individual tracks
+
 2. Create Terraform scripts that will standup the AWS environment:
-   * S3 buckets to store our data files as well as our Lambda code
+   * S3 buckets to store our data files as well as our Lambda source code
    * A Lambda function that will run our Python script
-   * External Python libraries are created as Lambda layers
+   * External Python libraries that we need are created as Lambda layers
    * IAM role and policies to allow the Lambda to be executed
    * A Cloudwatch alarm to invoke the lambda on a schedule
 
 ## Prerequisites
-
-You will need the following:
 
 * Python
 * Terraform
@@ -45,23 +47,22 @@ SPOTIPY_CLIENT_ID={YOUR_CLIENT_ID}
 SPOTIPY_CLIENT_SECRET={YOUR_SECRET}
 ```
 
-Make sure that this .tfvars file is included in the .gitignore, we do not want to check this into the repo.
+Make sure that this `.tfvars` file is included in the .gitignore, we do not want to check this into the repo.
 
 ### Run the terraform scripts
-The variables that are now defined in the .tfvars file are used in the `./tf/variable.tf` file. Now that Terraform is able to authenticate to AWS we can run Terraform
+The variables that are now defined in `.tfvars` are referenced in `./tf/variable.tf`. Now that Terraform is able to authenticate to AWS we can run Terraform on the console:
 ```
 cd /tf
 terraform init
 terraform plan
 ```
 
-If all goes well then you go can ahead and apply the changes using `terraform apply`. This should create the s3 paths, the Lambda, and a Cloudwatch rule that will run the Lambda on a weekly schedule.
+If the results of the plan command look good then you go can ahead and apply the changes using `terraform apply`. This should create the s3 paths, the Lambda, and a Cloudwatch rule that will run the Lambda on a weekly schedule.
 
-As the Lambda runs each week the results of the script will be saved into a file in S3. From that point we can use the data to start making observations and visualizations around the data, and see how album lengths are changing over time.
+As the Lambda runs each week the results of the script will be saved into a file in S3. From that point we can use the data to start making observations and visualizations around the data, and see how album lengths are changing over time. Pulling the data on a weekly cadence also opens up some additional analysis options, such as seeing how the playlists change over time.
 
 ### Create a local .env file
-In order to connect to S3 to do analysis of the files and create some visualizations, we need a way to authenticate to AWS. The way I chose to do this is to utilize
-the `os` and `dotenv` libraries to read my access key and secret from a local .env file. As this is sensitive info I have added the .env file to my .gitignore.
+In order to connect to S3 to do analysis of the files and create some visualizations, we need a way to authenticate to AWS. The way I chose to do this is to utilize the `os` and `dotenv` libraries to read my access key and secret from a local `.env` file. As this is sensitive info I have added the `.env` file to my `.gitignore`.
 
 Inside my Python scripts I just call `load_dotenv()`. By default that will look for environment variables to load within a file named .env, which exists in the root of my project. The contents of that file are just these variables:
 ```
