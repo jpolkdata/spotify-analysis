@@ -5,7 +5,7 @@ resource "aws_cloudwatch_event_rule" "weekly" {
   name = "weekly_spotify_analysis"
   description = "Trigger weekly"
   schedule_expression = "rate(7 days)"
-  is_enabled = true
+  is_enabled = false
   tags = {
     Project = local.project
   }
